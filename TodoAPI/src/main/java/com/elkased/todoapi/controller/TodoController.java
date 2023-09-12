@@ -29,4 +29,16 @@ public class TodoController {
         TodoDTO result = todoService.createTodo(todoDTO);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+
+    @PutMapping(value = {"", "/"})
+    public ResponseEntity<TodoDTO> updateTodo(@Validated @RequestBody TodoDTO todoDTO) {
+
+        TodoDTO result = todoService.updateTodo(todoDTO);
+        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping(value = "/{TodoID}")
+    public void deleteTodo(@PathVariable(name = "TodoID") long id) {
+        todoService.removeTodo(id);
+    }
 }

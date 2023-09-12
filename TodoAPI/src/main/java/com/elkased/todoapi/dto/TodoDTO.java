@@ -3,14 +3,13 @@ package com.elkased.todoapi.dto;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity(name = "todo")
 public class TodoDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
@@ -20,11 +19,8 @@ public class TodoDTO {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    {
-        this.timestamp = LocalDateTime.now();
-    }
-
     public TodoDTO() {
+        this.timestamp = LocalDateTime.now();
     }
 
     public TodoDTO(String title, String description, boolean complete) {
@@ -33,11 +29,11 @@ public class TodoDTO {
         this.complete = complete;
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

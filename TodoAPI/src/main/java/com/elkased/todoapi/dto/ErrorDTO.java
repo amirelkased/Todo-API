@@ -10,12 +10,12 @@ public class ErrorDTO {
     private LocalDateTime timestamp;
 
     public ErrorDTO() {
+        this.timestamp = LocalDateTime.now();
     }
 
     public ErrorDTO(String message, String path) {
         this.message = message;
         this.path = path;
-        this.timestamp = LocalDateTime.now();
     }
 
     public String getPath() {

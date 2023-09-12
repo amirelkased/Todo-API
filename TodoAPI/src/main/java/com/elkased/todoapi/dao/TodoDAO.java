@@ -10,4 +10,10 @@ public interface TodoDAO {
     List<TodoDTO> findAllTodo();
 
     TodoDTO saveTodo(TodoDTO todoDTO);
+
+    TodoDTO updateTodo(TodoDTO todoDTO);
+
+    boolean isExistsTodo(long id);
+
+    void deleteTodo(long id);
 }
