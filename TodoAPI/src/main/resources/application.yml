@@ -13,3 +13,7 @@ spring:
         show_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
+auth:
+  secret:5eqEd9yZRCN3T87r5ejT53zz9cR9xNCxCPODHf3wd238eAOiwnOvMbcUu2Fs/K+e
+  expiration:604800000
