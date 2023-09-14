@@ -24,7 +24,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.authorizeHttpRequests(e -> e.requestMatchers("/todos/*").authenticated().anyRequest().permitAll())
+        httpSecurity.authorizeHttpRequests(e -> e.requestMatchers("/todos/*")
+                        .authenticated()
+                        .anyRequest()
+                        .permitAll())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(e -> e.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider);
