@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private final String[] WHITELIST_ENDPOINT = {"", "/"};
-
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -26,17 +24,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity
-                .authorizeHttpRequests((e) -> {
-                    e.requestMatchers("/todos/*")
-                            .authenticated()
-                            .anyRequest()
-                            .permitAll();
-                })
+        httpSecurity.authorizeHttpRequests(e -> e.requestMatchers("/todos/*")
+                        .authenticated()
+                        .anyRequest()
+                        .permitAll())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement((e) -> {
-                    e.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
+                .sessionManagement(e -> e.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider);
 
         return httpSecurity.build();
