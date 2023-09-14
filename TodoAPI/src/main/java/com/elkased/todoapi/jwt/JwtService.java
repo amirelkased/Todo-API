@@ -29,7 +29,7 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         Claims claims = getClaims(token);
         return claimResolver.apply(claims);
     }
@@ -73,10 +73,11 @@ public class JwtService {
     }
 
     public boolean isTokenExpired(String token) {
-        return extractExpiration(token);
+        Date expirationDate = extractExpiration(token);
+        return expirationDate.before(new Date());
     }
 
-    private boolean extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 }
