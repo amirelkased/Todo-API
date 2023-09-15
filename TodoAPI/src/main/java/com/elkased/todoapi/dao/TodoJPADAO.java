@@ -7,6 +7,8 @@ import com.elkased.todoapi.exception.NoChangesFoundException;
 import com.elkased.todoapi.exception.NotFoundException;
 import com.elkased.todoapi.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 public class TodoJPADAO implements TodoDAO {
 
     @Autowired
-    TodoRepository todoRepository;
+    private TodoRepository todoRepository;
 
     @Override
     public List<TodoDTO> findAllTodo() {
@@ -25,7 +27,9 @@ public class TodoJPADAO implements TodoDAO {
     @Override
     public TodoDTO saveTodo(TodoDTO todoDTO) {
         try {
-
+            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String usename = principal == null ? null : principal.getUsername();
+            todoDTO.setUsername(usename);
             return todoRepository.save(todoDTO);
         } catch (Exception e) {
             String message = "Make Sure all fields is provided";

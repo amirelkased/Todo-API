@@ -19,6 +19,9 @@ public class TodoDTO {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
+    @Column(nullable = false)
+    private String username;
+
     public TodoDTO() {
         this.timestamp = LocalDateTime.now();
     }
@@ -67,5 +70,17 @@ public class TodoDTO {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
