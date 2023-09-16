@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface TodoDAO {
-    List<TodoDTO> findAllTodo();
+    List<TodoDTO> findAllTodo(String username);
 
     TodoDTO saveTodo(TodoDTO todoDTO);
 

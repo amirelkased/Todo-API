@@ -29,39 +29,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
-        final String authBegin = "Bearer ";
-        final String token;
-        final String username;
+        try {
+            final String authHeader = request.getHeader("Authorization");
+            final String authBegin = "Bearer ";
+            final String token;
+            final String username;
 
-        // Authentication (header) not valid
-        if (authHeader == null || !authHeader.startsWith(authBegin)) {
-            doFilter(request, response, filterChain);
-            return;
-        }
-
-        // when the header valid
-        token = authHeader.substring(authBegin.length());
-        username = jwtService.extractUsername(token);
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-            if (jwtService.isValidToken(token, userDetails)) {
-                // need object to update security context holder
-                // principle = userdetails
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-                // Add some details
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // Finally, update Security Context Holdler
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            // Authentication (header) not valid
+            if (authHeader == null || !authHeader.startsWith(authBegin)) {
+                doFilter(request, response, filterChain);
+                return;
             }
-        }
 
-        filterChain.doFilter(request, response);
+            // when the header valid
+            token = authHeader.substring(authBegin.length());
+            username = jwtService.extractUsername(token);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
+                if (jwtService.isValidToken(token, userDetails)) {
+                    // need object to update security context holder
+                    // principle = userdetails
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                    // Add some details
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    // Finally, update Security Context Holdler
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            doFilter(request, response, filterChain);
+        }
     }
 }

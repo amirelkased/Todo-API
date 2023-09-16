@@ -20,12 +20,13 @@ public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = {"/register", "/register/"})
     public ResponseEntity<AuthenticationResponse> register(@Validated @RequestBody RegisterRequest registerRequest) {
+
         return new ResponseEntity<>(authenticationService.register(registerRequest), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = {"/login", "/login/"})
     public ResponseEntity<AuthenticationResponse> login(@Validated @RequestBody LoginRequest loginRequest) {
 
         return new ResponseEntity<>(authenticationService.authenticate(loginRequest), HttpStatus.OK);
