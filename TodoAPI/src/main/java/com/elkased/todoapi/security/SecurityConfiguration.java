@@ -28,7 +28,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeHttpRequests(e -> e.requestMatchers("/todos", "/todos/**").authenticated())
-                .authorizeHttpRequests(e -> e.requestMatchers("/auth/*").permitAll())
+                .authorizeHttpRequests(e -> e.requestMatchers("/auth/**").permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(e -> e.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

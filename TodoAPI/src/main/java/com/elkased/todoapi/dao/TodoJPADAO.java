@@ -20,8 +20,8 @@ public class TodoJPADAO implements TodoDAO {
     private TodoRepository todoRepository;
 
     @Override
-    public List<TodoDTO> findAllTodo() {
-        return todoRepository.findAll();
+    public List<TodoDTO> findAllTodo(String username) {
+        return todoRepository.findAllByUsername(username);
     }
 
     @Override

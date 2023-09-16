@@ -5,6 +5,8 @@ import com.elkased.todoapi.dto.TodoDTO;
 import com.elkased.todoapi.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +19,11 @@ public class TodoService {
     TodoDAO todoDAO;
 
     public List<TodoDTO> getAllTodo() {
-        return todoDAO.findAllTodo();
+        return todoDAO.findAllTodo(getActiveUsername());
     }
 
     public TodoDTO createTodo(TodoDTO todoDTO) {
+        todoDTO.setUsername(getActiveUsername());
         return todoDAO.saveTodo(todoDTO);
     }
 
@@ -34,5 +37,10 @@ public class TodoService {
 
     public void removeTodo(long id) {
         todoDAO.deleteTodo(id);
+    }
+
+    private String getActiveUsername() {
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal == null ? null : principal.getUsername();
     }
 }
