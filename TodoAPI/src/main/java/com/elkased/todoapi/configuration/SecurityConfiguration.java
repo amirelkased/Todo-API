@@ -1,6 +1,5 @@
-package com.elkased.todoapi.security;
+package com.elkased.todoapi.configuration;
 
-import com.elkased.todoapi.configuration.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class SecurityConfiguration {
 
     private final String[] BLACK_LIST = {"/todos", "/todos/**"};
+    private final String[] WHITE_LIST = {"/auth/**"};
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -27,8 +27,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.authorizeHttpRequests(e -> e.requestMatchers("/todos", "/todos/**").authenticated())
-                .authorizeHttpRequests(e -> e.requestMatchers("/auth/**").permitAll())
+        httpSecurity.authorizeHttpRequests(e -> e.requestMatchers(BLACK_LIST).authenticated())
+                .authorizeHttpRequests(e -> e.requestMatchers(WHITE_LIST).permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(e -> e.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
