@@ -1,6 +1,6 @@
 package com.elkased.todoapi.controller;
 
-import com.elkased.todoapi.dto.TodoDTO;
+import com.elkased.todoapi.model.TodoDto;
 import com.elkased.todoapi.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,22 +18,22 @@ public class TodoController {
     TodoService todoService;
 
     @GetMapping(value = {"", "/"})
-    public ResponseEntity<List<TodoDTO>> getAllTodos() {
+    public ResponseEntity<List<TodoDto>> getAllTodos() {
 
-        List<TodoDTO> allTodoResult = todoService.getAllTodo();
+        List<TodoDto> allTodoResult = todoService.getAllTodo();
         return new ResponseEntity<>(allTodoResult, HttpStatus.OK);
     }
 
     @PostMapping(value = {"", "/"})
-    public ResponseEntity<TodoDTO> createTodo(@Validated @RequestBody TodoDTO todoDTO) {
-        TodoDTO result = todoService.createTodo(todoDTO);
+    public ResponseEntity<TodoDto> createTodo(@Validated @RequestBody TodoDto todoDto) {
+        TodoDto result = todoService.createTodo(todoDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping(value = {"", "/"})
-    public ResponseEntity<TodoDTO> updateTodo(@Validated @RequestBody TodoDTO todoDTO) {
+    public ResponseEntity<TodoDto> updateTodo(@Validated @RequestBody TodoDto todoDto) {
 
-        TodoDTO result = todoService.updateTodo(todoDTO);
+        TodoDto result = todoService.updateTodo(todoDto);
         return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
     }
 

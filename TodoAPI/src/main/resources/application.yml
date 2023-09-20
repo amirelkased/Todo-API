@@ -12,8 +12,11 @@ spring:
         format_sql: true
         show_sql: true
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
 
 auth:
   secret: "5eqEd9yZRCN3T87r5ejT53zz9cR9xNCxCPODHf3wd238eAOiwnOvMbcUu2Fs/K+e"
   expiration: 604800000
+
+server:
+  port: 9090

@@ -1,6 +1,8 @@
-package com.elkased.todoapi.dto;
+package com.elkased.todoapi.model.entity;
 
+import com.elkased.todoapi.model.Role;
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,8 +10,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Entity(name = "user")
-public class UserDTO implements UserDetails {
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,62 +31,8 @@ public class UserDTO implements UserDetails {
     private String username;
     @Column(nullable = false)
     private String password;
-
     @Enumerated(value = EnumType.STRING)
     private Role role;
-
-    public UserDTO() {
-    }
-
-    public UserDTO(Integer id, String firstname, String lastname, String username, String password, Role role) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,10 +42,6 @@ public class UserDTO implements UserDetails {
     @Override
     public String getUsername() {
         return this.username;
-    }
-
-    public void setUsername(String email) {
-        this.username = email;
     }
 
     @Override

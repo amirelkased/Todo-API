@@ -1,17 +1,17 @@
 package com.elkased.todoapi.dao;
 
-import com.elkased.todoapi.dto.TodoDTO;
+import com.elkased.todoapi.model.entity.Todo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface TodoDAO {
-    List<TodoDTO> findAllTodo(String username);
+    List<Todo> findAllTodo(String username);
 
-    TodoDTO saveTodo(TodoDTO todoDTO);
+    Todo saveTodo(Todo todo);
 
-    TodoDTO updateTodo(TodoDTO todoDTO);
+    Todo updateTodo(Todo todo);
 
     boolean isExistsTodo(long id);
 

@@ -1,14 +1,12 @@
 package com.elkased.todoapi.dao;
 
 
-import com.elkased.todoapi.dto.TodoDTO;
 import com.elkased.todoapi.exception.InvalidArgumentException;
 import com.elkased.todoapi.exception.NoChangesFoundException;
 import com.elkased.todoapi.exception.NotFoundException;
+import com.elkased.todoapi.model.entity.Todo;
 import com.elkased.todoapi.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,17 +18,15 @@ public class TodoJPADAO implements TodoDAO {
     private TodoRepository todoRepository;
 
     @Override
-    public List<TodoDTO> findAllTodo(String username) {
+    public List<Todo> findAllTodo(String username) {
         return todoRepository.findAllByUsername(username);
     }
 
     @Override
-    public TodoDTO saveTodo(TodoDTO todoDTO) {
+    public Todo saveTodo(Todo todo) {
         try {
-            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String usename = principal == null ? null : principal.getUsername();
-            todoDTO.setUsername(usename);
-            return todoRepository.save(todoDTO);
+
+            return todoRepository.save(todo);
         } catch (Exception e) {
             String message = "Make Sure all fields is provided";
             throw new InvalidArgumentException(message);
@@ -38,24 +34,25 @@ public class TodoJPADAO implements TodoDAO {
     }
 
     @Override
-    public TodoDTO updateTodo(TodoDTO todoDTO) {
+    public Todo updateTodo(Todo todo) {
 
-        TodoDTO oldOne = todoRepository.findById(todoDTO.getId()).get();
+        Todo oldOne = todoRepository.findById(todo.getId())
+                .orElseThrow(() -> new NotFoundException("This is Todo id [%d] not exists".formatted(todo.getId())));
 
         boolean changes = false;
 
-        if (todoDTO.getTitle() != null && !oldOne.getTitle().equals(todoDTO.getTitle())) {
-            oldOne.setTitle(todoDTO.getTitle());
+        if (todo.getTitle() != null && !oldOne.getTitle().equals(todo.getTitle())) {
+            oldOne.setTitle(todo.getTitle());
             changes = true;
         }
 
-        if (todoDTO.getDescription() != null && !oldOne.getDescription().equals(todoDTO.getDescription())) {
-            oldOne.setDescription(todoDTO.getDescription());
+        if (todo.getDescription() != null && !oldOne.getDescription().equals(todo.getDescription())) {
+            oldOne.setDescription(todo.getDescription());
             changes = true;
         }
 
-        if (oldOne.isComplete() != todoDTO.isComplete()) {
-            oldOne.setComplete(todoDTO.isComplete());
+        if (oldOne.isComplete() != todo.isComplete()) {
+            oldOne.setComplete(todo.isComplete());
             changes = true;
         }
 
