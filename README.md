@@ -4,8 +4,6 @@ This Todo API provides web services for managing your to-do list using SpringBoo
 
 You can access and manage your to-do items by logging into the system or registering for the first time.
 
----
-
 ## Technologies
 
 The TodoList application leverages modern technologies to deliver a robust and user-friendly experience:
@@ -15,8 +13,6 @@ The TodoList application leverages modern technologies to deliver a robust and u
 - **Tomcat Server 10.1.11**: The popular servlet container used to host and manage the application.
 - **MySQL Database**: Securely and efficiently storing your to-do tasks.
 - **JWT Authentication**: JSON Web Token is employed for secure data transmission.
-
----
 
 ## Main Features
 
@@ -28,8 +24,6 @@ TodoList offers a comprehensive set of features to help you stay organized and o
 - **Update Existing Todo**: Modify and update task details as your plans change.
 - **Delete Todo**: Remove completed or unnecessary tasks to keep your list concise and up-to-date.
 
----
-
 ## Getting Started
 
 To get started with TodoList, follow these steps:
@@ -39,8 +33,6 @@ To get started with TodoList, follow these steps:
 3. **Access**: Open your web browser and navigate to the TodoList URL.
 4. **Login / Register**: Create an account or log in to start managing your tasks.
 5. **Interact**: Use the intuitive user interface to add, update, and delete tasks.
-
----
 
 ## Contact
 
