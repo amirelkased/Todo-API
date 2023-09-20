@@ -1,4 +1,4 @@
-package com.elkased.todoapi.dto;
+package com.elkased.todoapi.model;
 
 public enum Role {
 

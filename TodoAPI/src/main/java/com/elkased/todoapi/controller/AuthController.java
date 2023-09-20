@@ -1,8 +1,8 @@
 package com.elkased.todoapi.controller;
 
-import com.elkased.todoapi.dto.AuthenticationResponse;
-import com.elkased.todoapi.dto.LoginRequest;
-import com.elkased.todoapi.dto.RegisterRequest;
+import com.elkased.todoapi.model.AuthenticationResponse;
+import com.elkased.todoapi.model.LoginDto;
+import com.elkased.todoapi.model.RegisterDto;
 import com.elkased.todoapi.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +21,14 @@ public class AuthController {
     private AuthenticationService authenticationService;
 
     @PostMapping(value = {"/register", "/register/"})
-    public ResponseEntity<AuthenticationResponse> register(@Validated @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<AuthenticationResponse> register(@Validated @RequestBody RegisterDto registerDto) {
 
-        return new ResponseEntity<>(authenticationService.register(registerRequest), HttpStatus.OK);
+        return new ResponseEntity<>(authenticationService.register(registerDto), HttpStatus.OK);
     }
 
     @PostMapping(value = {"/login", "/login/"})
-    public ResponseEntity<AuthenticationResponse> login(@Validated @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthenticationResponse> login(@Validated @RequestBody LoginDto loginDto) {
 
-        return new ResponseEntity<>(authenticationService.authenticate(loginRequest), HttpStatus.OK);
+        return new ResponseEntity<>(authenticationService.authenticate(loginDto), HttpStatus.OK);
     }
 }

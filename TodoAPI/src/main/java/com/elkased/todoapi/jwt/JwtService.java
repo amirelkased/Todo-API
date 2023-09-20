@@ -1,6 +1,6 @@
 package com.elkased.todoapi.jwt;
 
-import com.elkased.todoapi.dto.AuthenticationProperties;
+import com.elkased.todoapi.model.AuthenticationProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,12 +18,6 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-
-/*    @Value("${auth.secret}")
-    private String SECRET_KEY;
-
-    @Value("${auth.expiration}")
-    private Long EXPIRE_PERIOD;*/
 
     @Autowired
     private AuthenticationProperties authProperties;
@@ -48,7 +42,7 @@ public class JwtService {
 
     private Key getSignInKey() {
         // Decode secret key
-        byte[] keyBytes = Decoders.BASE64.decode(authProperties.getSecretKey());
+        byte[] keyBytes = Decoders.BASE64.decode(authProperties.secretKey());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -64,7 +58,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + authProperties.getExpirationPeriod()))
+                .setExpiration(new Date(System.currentTimeMillis() + authProperties.expirationPeriod()))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -1,23 +1,26 @@
 package com.elkased.todoapi.exception;
 
-import com.elkased.todoapi.dto.ErrorDTO;
+import com.elkased.todoapi.model.ErrorMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
+
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ErrorDTO> apiExceptionHandler(ApiBaseExceptionHandling ex, WebRequest request) {
+    public ResponseEntity<ErrorMessage> apiExceptionHandler(ApiBaseExceptionHandling ex, WebRequest request) {
 
-        ErrorDTO errorDTO = new ErrorDTO();
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .message(ex.getMessage())
+                .path(request.getDescription(false))
+                .timestamp(LocalDateTime.now())
+                .build();
 
-        errorDTO.setMessage(ex.getMessage());
-        errorDTO.setPath(request.getDescription(false));
-
-        return new ResponseEntity<>(errorDTO, ex.getStatusCode());
+        return new ResponseEntity<>(errorMessage, ex.getStatusCode());
     }
 }

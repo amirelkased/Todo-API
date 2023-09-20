@@ -1,13 +1,17 @@
 package com.elkased.todoapi.service;
 
-import com.elkased.todoapi.dto.*;
 import com.elkased.todoapi.exception.LoginFailureException;
+import com.elkased.todoapi.exception.RegisterFailureException;
 import com.elkased.todoapi.jwt.JwtService;
+import com.elkased.todoapi.model.AuthenticationResponse;
+import com.elkased.todoapi.model.LoginDto;
+import com.elkased.todoapi.model.RegisterDto;
+import com.elkased.todoapi.model.Role;
+import com.elkased.todoapi.model.entity.User;
 import com.elkased.todoapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,40 +30,36 @@ public class AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest registerRequest) {
-
-        UserDTO userDTO = mapRegisterRequestToUser(registerRequest);
-        userRepository.save(userDTO);
-        String token = jwtService.generateToken(userDTO);
-        return new AuthenticationResponse(token);
-    }
-
-    public AuthenticationResponse authenticate(LoginRequest loginRequest) {
+    public AuthenticationResponse register(RegisterDto registerDto) {
 
         try {
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-            authenticationManager.authenticate(authToken);
+            User user = User.builder()
+                    .firstname(registerDto.getFirstname())
+                    .lastname(registerDto.getLastname())
+                    .username(registerDto.getUsername())
+                    .password(passwordEncoder.encode(registerDto.getPassword()))
+                    .role(Role.USER)
+                    .build();
 
-            UserDTO userDTO = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
-            String token = jwtService.generateToken(userDTO);
-
+            userRepository.save(user);
+            String token = jwtService.generateToken(user);
             return new AuthenticationResponse(token);
-        } catch (AuthenticationException e) {
-            String message = "Login process is fail, recheck your username or password";
-            throw new LoginFailureException(message);
+        } catch (Exception e) {
+            String message = "Registration was fail!";
+            throw new RegisterFailureException(message);
         }
     }
 
-    private UserDTO mapRegisterRequestToUser(RegisterRequest registerRequest) {
+    public AuthenticationResponse authenticate(LoginDto loginDto) {
 
-        UserDTO userDTO = new UserDTO();
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+        authenticationManager.authenticate(authToken);
 
-        userDTO.setFirstname(registerRequest.getFirstname());
-        userDTO.setLastname(registerRequest.getLastname());
-        userDTO.setUsername(registerRequest.getUsername());
-        userDTO.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        userDTO.setRole(Role.USER);
+        User user = userRepository.findByUsername(loginDto.getUsername())
+                .orElseThrow(() -> new LoginFailureException("Login process is fail, recheck your username or password"));
+        String token = jwtService.generateToken(user);
 
-        return userDTO;
+        return new AuthenticationResponse(token);
     }
 }
