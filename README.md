@@ -37,3 +37,5 @@ To get started with TodoList, follow these steps:
 ## Contact
 
 For questions or support, please contact [Email](mailto:amirelkased.dev@gmail.com). We're here to assist you with any inquiries or assistance you may need.
+
+<!--*zS$T8$&Tx%VH83*a2@PFpe3#CRGW8i$nHgrhbE2^7FK#P@7!8Wa38rYBXbV2tnisQsj&GDwhGVD83%%hYvYy3G49oQj!5MU-->
